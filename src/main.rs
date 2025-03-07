@@ -21,16 +21,16 @@ fn main() {
     let mut num1: BigUint = big_uint_0;
     let mut num2: BigUint = big_uint_1;
     let mut print_step_size: i128;
-    let mut start_time: u128 = 0;
-    let mut end_time: u128;
-    let mut time_delta: u128 = 0;
+    let mut _start_time: u128 = 0;
+    let mut _end_time: u128;
+    let mut _time_delta: u128 = 0;
     let mut time_benchmark: bool = false;
     let temp_string: String;
-    
+
     macro_rules! time_benchmark_start {
         () => {
             if time_benchmark == true {
-                start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
+                _start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
             }
         };
     }
@@ -38,39 +38,39 @@ fn main() {
     macro_rules! time_benchmark_end {
         () => {
             if time_benchmark == true {
-                end_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
-                time_delta = end_time - start_time;
+                _end_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
+                _time_delta = _end_time - _start_time;
             }
         };
     }
-    
+
     macro_rules! print_time_benchmark_results {
         () => {
             if time_benchmark == true {
-                let hrs_f: f32 = (time_delta / MILLIS_TO_HRS) as f32;
-                let mins_f: f32 = (time_delta / MILLIS_TO_MINS) as f32;
-                let secs_f: f32 = (time_delta / MILLIS_TO_SECS) as f32;
+                let hrs_f: f32 = (_time_delta / MILLIS_TO_HRS) as f32;
+                let mins_f: f32 = (_time_delta / MILLIS_TO_MINS) as f32;
+                let secs_f: f32 = (_time_delta / MILLIS_TO_SECS) as f32;
                 let hrs: u128 = hrs_f.floor() as u128;
                 let mins: u128 = mins_f.floor() as u128;
                 let secs: u128 = secs_f.floor() as u128;
-                
+
                 print!("This operation took ");
                 if hrs >= 1 {
-                    print!("{} hours ", time_delta / MILLIS_TO_HRS);
+                    print!("{} hours ", _time_delta / MILLIS_TO_HRS);
                 }
                 if mins >= 1 {
-                    print!("{} minutes ", (time_delta / MILLIS_TO_MINS) - hrs * MILLIS_TO_HRS);
+                    print!("{} minutes ", (_time_delta / MILLIS_TO_MINS) - hrs * MILLIS_TO_HRS);
                 }
                 if secs >= 1 {
-                    print!("{} seconds ", ((time_delta / MILLIS_TO_SECS) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS);
+                    print!("{} seconds ", ((_time_delta / MILLIS_TO_SECS) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS);
                 }
-                println!("{} milliseconds", (((time_delta) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS) - secs * MILLIS_TO_SECS);
+                println!("{} milliseconds", (((_time_delta) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS) - secs * MILLIS_TO_SECS);
             }
         };
     }
     
     println!("Welcome!\n\n");
-    
+
     println!("Type y/n if you would like the calculations to be timed from now on");
     temp_string = read!();
     if temp_string.to_lowercase() == "y" {
@@ -79,8 +79,8 @@ fn main() {
     while running == true { // program loop
         println!("Input 1 to ask for specific Fibonacci numbers \nInput 2 for a iterative output up to a certain number \nInput 3 to exit the program");
         let program: i8 = read!();
-        
-        
+
+
         if program == 1 { // direct Fibonacci number program
             println!("What fibonacci number do you want?");
             input1 = read!();
