@@ -6,12 +6,12 @@ This program calculates the Fibonacci sequence up to a specified value whether d
 
 There are two ways to install it:
 
-1. #### Easier
+1. #### Prebuilt binary
     1. Download one of the builds from the releases panel
     2. Unzip the file and open the folder
     3. Locate the <b>fibonacci.exe</b> file inside the folder and run it
 
-2. #### Harder
+2. #### Build it yourself
     1. Clone the repo
     2. Navigate to the directory
     3. Build the .exe file with the command:
