@@ -1,7 +1,7 @@
 // imports
 use ::text_io::*;
 use ::num::BigUint;
-use std::time::SystemTime;
+use std::time::{Duration, Instant};
 
 fn main() {
     // const
@@ -21,16 +21,16 @@ fn main() {
     let mut num1: BigUint = big_uint_0;
     let mut num2: BigUint = big_uint_1;
     let mut print_step_size: i128;
-    let mut _start_time: u128 = 0;
-    let mut _end_time: u128;
-    let mut _time_delta: u128 = 0;
+    let mut _time_start: Instant = Instant::now();
+    let mut _time_end: Instant = Instant::now();
+    let mut _time_delta: Duration = _time_end - _time_start;
     let mut time_benchmark: bool = false;
     let temp_string: String;
 
     macro_rules! time_benchmark_start {
         () => {
             if time_benchmark == true {
-                _start_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
+                _time_start = Instant::now();
             }
         };
     }
@@ -38,8 +38,8 @@ fn main() {
     macro_rules! time_benchmark_end {
         () => {
             if time_benchmark == true {
-                _end_time = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_millis();
-                _time_delta = _end_time - _start_time;
+                _time_end = Instant::now();
+                _time_delta = _time_end - _time_start;
             }
         };
     }
@@ -47,24 +47,29 @@ fn main() {
     macro_rules! print_time_benchmark_results {
         () => {
             if time_benchmark == true {
-                let hrs_f: f32 = (_time_delta / MILLIS_TO_HRS) as f32;
-                let mins_f: f32 = (_time_delta / MILLIS_TO_MINS) as f32;
-                let secs_f: f32 = (_time_delta / MILLIS_TO_SECS) as f32;
-                let hrs: u128 = hrs_f.floor() as u128;
-                let mins: u128 = mins_f.floor() as u128;
-                let secs: u128 = secs_f.floor() as u128;
+                let mut remaining_time = _time_delta.as_millis();
+                let hrs: u128 = remaining_time / MILLIS_TO_HRS;
+                remaining_time = remaining_time % MILLIS_TO_HRS;
+                
+                let mins: u128 = remaining_time / MILLIS_TO_MINS;
+                remaining_time = remaining_time % MILLIS_TO_MINS;
+                
+                let secs: u128 = remaining_time / MILLIS_TO_SECS;
+                remaining_time = remaining_time % MILLIS_TO_SECS;
+                
+                let millis: u128 = remaining_time;
 
                 print!("This operation took ");
                 if hrs >= 1 {
-                    print!("{} hours ", _time_delta / MILLIS_TO_HRS);
+                    print!("{} hours ", hrs);
                 }
                 if mins >= 1 {
-                    print!("{} minutes ", (_time_delta / MILLIS_TO_MINS) - hrs * MILLIS_TO_HRS);
+                    print!("{} minutes ", mins);
                 }
                 if secs >= 1 {
-                    print!("{} seconds ", ((_time_delta / MILLIS_TO_SECS) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS);
+                    print!("{} seconds ", secs);
                 }
-                println!("{} milliseconds", (((_time_delta) - hrs * MILLIS_TO_HRS) - mins * MILLIS_TO_MINS) - secs * MILLIS_TO_SECS);
+                println!("{} milliseconds", millis);
             }
         };
     }
